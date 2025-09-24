@@ -31,22 +31,14 @@ if (process.env.NODE_ENV === "production") {
 
 // Middlewares
 app.use(helmet());
-// app.use(
-//   cors({
-//     origin:
-//       process.env.NODE_ENV === "production"
-//         ? ["https://your-frontend-domain.com"] // replace with actual frontend
-//         : ["http://localhost:3000"],
-//     credentials: true,
-//   })
-// );
+
 
 
 
 const allowedOrigins: string[] = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://your-frontend-domain.com"
+  "https://flex-living-frontend-timi.vercel.app/"
 ];
 
 
