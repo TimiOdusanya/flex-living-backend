@@ -14,7 +14,7 @@ import { createGoogleReviewsRoutes } from "./routes/googleReviews";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT || '5000', 10);
 
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -106,7 +106,7 @@ app.use(
 );
 
 //  Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Flex Living Reviews API running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
   console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
