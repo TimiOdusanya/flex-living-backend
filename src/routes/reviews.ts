@@ -8,7 +8,7 @@ export const createReviewRoutes = (reviewController: ReviewController) => {
   router.get('/', authenticateToken, requireManager, reviewController.getReviews);
   router.get('/approved', reviewController.getApprovedReviews);
   router.get('/dashboard-stats', authenticateToken, requireManager, reviewController.getDashboardStats);
-  router.get('/properties', authenticateToken, requireManager, reviewController.getProperties);
+  router.get('/properties', reviewController.getProperties);
   router.patch('/:reviewId/approve', authenticateToken, requireManager, reviewController.approveReview);
   router.patch('/:reviewId/reject', authenticateToken, requireManager, reviewController.rejectReview);
 
