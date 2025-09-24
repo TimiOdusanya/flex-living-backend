@@ -83,10 +83,9 @@ export class HostawayService {
   }
 
   private extractPropertyId(listingName: string): string {
-    // Convert to lowercase and replace spaces with dashes, but handle special cases
+
     let propertyId = listingName.toLowerCase().replace(/\s+/g, '-');
     
-    // Handle specific property name mappings to match the property service
     const propertyMappings: { [key: string]: string } = {
       '2b-n1-a---29-shoreditch-heights': '2b-n1-a-29-shoreditch-heights',
       'luxury-loft-in-manhattan': 'luxury-loft-manhattan',
