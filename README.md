@@ -67,8 +67,8 @@ A comprehensive backend API for managing property reviews and analytics for Flex
    ```env
    PORT=5000
    JWT_SECRET=your-super-secret-jwt-key-change-in-production
-   HOSTAWAY_API_KEY=f94377ebbbb479490bb3ec364649168dc443dda2e4830facaf5de2e74ccc9152
-   HOSTAWAY_ACCOUNT_ID=61148
+   HOSTAWAY_API_KEY=hostaway-api-key
+   HOSTAWAY_ACCOUNT_ID=account-id
    GOOGLE_PLACES_API_KEY=your-google-places-api-key
    NODE_ENV=development
    ```
