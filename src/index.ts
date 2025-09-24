@@ -38,28 +38,43 @@ app.use(helmet());
 const allowedOrigins: string[] = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://flex-living-frontend-timi.vercel.app/"
+  "https://flex-living-frontend-timi.vercel.app",
+  "https://flex-living-frontend-timi.vercel.app/",
 ];
 
 
 app.use(
   cors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
         callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
+        return;
       }
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      
+      if (process.env.NODE_ENV !== 'production' && origin.startsWith('http://localhost:')) {
+        callback(null, true);
+        return;
+      }
+      
+      console.log(`CORS blocked origin: ${origin}`);
+      console.log(`Allowed origins:`, allowedOrigins);
+      
+      callback(new Error(`Not allowed by CORS: ${origin}`), false);
     },
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     credentials: true,
+    optionsSuccessStatus: 200, 
   })
 );
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//  Initialize services & controllers
+//  Initialize services & controllers.
 const reviewService = new ReviewService(
   hostawayApiKey!,
   hostawayAccountId!,
@@ -98,6 +113,17 @@ app.use((req: Request, res: Response) => {
 app.use(
   (err: any, req: Request, res: Response, next: NextFunction) => {
     console.error("Unhandled Error:", err);
+    
+    // Handle CORS errors specifically
+    if (err.message && err.message.includes("Not allowed by CORS")) {
+      return res.status(403).json({
+        success: false,
+        message: "CORS Error: Request origin not allowed",
+        error: err.message,
+        allowedOrigins: allowedOrigins
+      });
+    }
+    
     res.status(500).json({
       success: false,
       message: "Internal server error",
